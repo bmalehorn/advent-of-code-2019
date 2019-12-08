@@ -1,11 +1,13 @@
 import itertools
 import pprint
+import re
 
 
-def parse(filename):
+def parse(filename, split="[^\\d]+"):
     return [
-        list(map(int, line.strip().split()))
+        list(map(int, re.compile(split).split(line.strip())))
         for line in open(filename).read().strip().splitlines()
+        if not line.startswith("#")
     ]
 
 

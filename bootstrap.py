@@ -8,12 +8,14 @@ from aoc import parse, flatten, pp
 import aoc
 
 
-def main():
+def part1():
     numbers = parse("%s-easy.txt")
     pp(numbers)
 
+def part2():
+    pass
 
-main()
+part1()
 """
 
 

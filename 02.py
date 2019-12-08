@@ -18,17 +18,38 @@ def step(mem, eip):
         return eip + 4
 
 
-def main():
+# 3716250
+def part1():
     mem = flatten(parse("02.txt"))
     mem[1] = 12
     mem[2] = 2
-    pp(mem)
+    # pp(mem)
     eip = 0
     while eip is not None:
         eip = step(mem, eip)
-        pp(eip, mem)
+        # pp(eip, mem)
     pp(mem[0])
 
-# That's not the right answer; your answer is too low. If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit. Please wait one minute before trying again. (You guessed 29848.) [Return to Day 2]
 
-main()
+def get_output(mem, noun, verb):
+    mem = mem[:]
+    mem[1] = noun
+    mem[2] = verb
+    eip = 0
+    while eip is not None:
+        eip = step(mem, eip)
+        # pp(eip, mem)
+    return mem[0]
+
+
+def part2():
+    mem = flatten(parse("02.txt"))
+    for noun in range(0, 99):
+        for verb in range(0, 99):
+            output = get_output(mem, noun, verb)
+            if output == 19690720:
+                pp(noun, verb, output)
+                pp(100 * noun + verb)
+
+
+part2()

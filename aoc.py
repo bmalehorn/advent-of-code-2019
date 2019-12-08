@@ -1,4 +1,5 @@
 import itertools
+from collections import defaultdict, deque
 import pprint
 import re
 import os
@@ -26,7 +27,7 @@ def pp(*args):
 
 
 def uniqc(a):
-    d = {}
+    d = defaultdict(lambda: 0)
     for e in a:
         if e not in d:
             d[e] = 0

@@ -19,7 +19,7 @@ def read(mem, posdata, eip, index):
         )
 
 
-def step(mem, eip):
+def step(mem, eip, input=1):
     a = mem[eip]
     opcode = a % 100
     posdata = a // 100
@@ -30,19 +30,50 @@ def step(mem, eip):
         mem[mem[eip + 3]] = read(mem, posdata, eip, 1) * read(mem, posdata, eip, 2)
         return eip + 4
     elif opcode == 3:
-        print("input")
-        mem[mem[eip + 1]] = 1
+        print("input %r" % input)
+        mem[mem[eip + 1]] = input
         return eip + 2
     elif opcode == 4:
         output = read(mem, posdata, eip, 1)
         print("output %r" % output)
         return eip + 2
+    elif opcode == 5:
+        param = read(mem, posdata, eip, 1)
+        val = read(mem, posdata, eip, 2)
+        if param != 0:
+            return val
+        else:
+            return eip + 3
+    elif opcode == 6:
+        param = read(mem, posdata, eip, 1)
+        val = read(mem, posdata, eip, 2)
+        if param == 0:
+            return val
+        else:
+            return eip + 3
+    elif opcode == 7:
+        param1 = read(mem, posdata, eip, 1)
+        param2 = read(mem, posdata, eip, 2)
+        if param1 < param2:
+            mem[mem[eip + 3]] = 1
+        else:
+            mem[mem[eip + 3]] = 0
+        return eip + 4
+    elif opcode == 8:
+        param1 = read(mem, posdata, eip, 1)
+        param2 = read(mem, posdata, eip, 2)
+        if param1 == param2:
+            mem[mem[eip + 3]] = 1
+        else:
+            mem[mem[eip + 3]] = 0
+        return eip + 4
     elif opcode == 99:
         return None
     else:
         raise Exception("bad opcode %r" % opcode)
 
 
+# 7286649
 def part1():
     mem = flatten(parse("05.txt"))
     eip = 0
@@ -52,7 +83,11 @@ def part1():
 
 
 def part2():
-    pass
+    mem = flatten(parse("05.txt"))
+    eip = 0
+    while eip is not None:
+        eip = step(mem, eip, input=5)
+    # pp(mem)
 
 
-part1()
+part2()

@@ -1,5 +1,5 @@
 import math
-from collections import defaultdict
+from collections import defaultdict, deque
 from aoc import parse, flatten, pp, uniqc, trace
 import aoc
 
@@ -26,7 +26,29 @@ def part1():
 
 
 def part2():
-    pass
+    siblings = defaultdict(set)
+    planets = set()
+    for line in open("06.txt").read().strip().splitlines():
+        a, b = line.strip().split(")")
+        siblings[a].add(b)
+        siblings[b].add(a)
+        planets |= {a, b}
+    pp(siblings)
+    pp(planets)
+    queue = deque([("YOU", 0)])
+    visited = set()
+    while queue:
+        node, steps = queue.popleft()
+        if node == "SAN":
+            pp(steps - 2)
+            return
+        if node in visited:
+            continue
+        visited.add(node)
+        pp(node)
+        for child in siblings[node]:
+            queue.append((child, steps + 1))
+    print("bad exit")
 
 
-part1()
+part2()

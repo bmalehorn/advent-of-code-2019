@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
+# nodemon 03.py -e py,txt
+
 import sys
 
 SKELETON = """
 import math
+from collections import defaultdict
 from aoc import parse, flatten, pp
 import aoc
 

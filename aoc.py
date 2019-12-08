@@ -1,4 +1,5 @@
 import itertools
+from itertools import chain
 from collections import defaultdict, deque
 import pprint
 import re
@@ -41,7 +42,11 @@ assert list(uniqc([5, 5, 6])) == list({5: 2, 6: 1})
 
 def trace(f):
     def g(*args, **kwargs):
-        sys.stdout.write("%s%r => " % (f.__name__, args))
+        args_strs = ["%r" % arg for arg in args]
+        kwargs_strs = ["%s=%r" % (key, value) for key, value in kwargs.items()]
+        sys.stdout.write(
+            "%s(%s) => " % (f.__name__, ", ".join(args_strs + kwargs_strs))
+        )
         sys.stdout.flush()
         res = f(*args, **kwargs)
         sys.stdout.write("%r\n" % res)

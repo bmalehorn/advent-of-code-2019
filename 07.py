@@ -50,8 +50,8 @@ def step(mem, eip, input):
         eip += 2
 
     elif opcode == 4:
-        # print("output %r" % output)
         output = r(1)
+        # print("output %r" % output)
         eip += 2
 
     elif opcode == 5:
@@ -83,6 +83,7 @@ def step(mem, eip, input):
         eip += 4
 
     elif opcode == 99:
+        print("halt")
         eip = None
 
     else:
@@ -93,7 +94,7 @@ def step(mem, eip, input):
 
 # That's not the right answer; your answer is too high. If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit. Please wait one minute before trying again. (You guessed 638506.)
 
-
+# 262086
 def part1():
     pp(best_sequence([3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0]))
 
@@ -201,7 +202,83 @@ def doit(mem, phase_setting, input_signal):
 
 
 def part2():
-    pass
+    # mem = flatten(parse("07.txt"))
+    # pp(best_sequence2(mem))
+    pp(
+        best_sequence2(
+            [
+                3,
+                26,
+                1001,
+                26,
+                -4,
+                26,
+                3,
+                27,
+                1002,
+                27,
+                2,
+                27,
+                1,
+                27,
+                26,
+                27,
+                4,
+                27,
+                1001,
+                28,
+                -1,
+                28,
+                1005,
+                28,
+                6,
+                99,
+                0,
+                0,
+                5,
+            ]
+        )
+    )
 
 
-part1()
+def doit2(mem, phase_setting, input_signal):
+    mem = mem[:]
+    eip = 0
+    state = "phase"
+    while eip is not None:
+        if state == "phase":
+            eip, output, pulled_input = step(mem, eip, input=phase_setting)
+            if pulled_input:
+                state = "signal"
+        elif state == "signal":
+            eip, output, pulled_input = step(mem, eip, input=input_signal)
+            if output is not None:
+                return output
+    return None
+
+
+def best_sequence2(mem):
+    best_input_signal = 0
+    for phase in permutations([5, 6, 7, 8, 9]):
+        input_signal = 0
+        while True:
+            # BUG: Provide each amplifier its phase setting at its first input instruction; all further input/output instructions are for signals.
+            # instead, I re-use the phase here
+            # All signals sent or received in this process will be between pairs of amplifiers except the very first signal and the very last signal. To start the process, a 0 signal is sent to amplifier A's input exactly once.
+            halt = False
+            for i in range(len(phase)):
+                res = doit2(mem, phase[i], input_signal)
+                if res is None:
+                    halt = True
+                    print('@@@ output')
+                    break
+                input_signal = res
+            if halt:
+                break
+        if best_input_signal < input_signal:
+            best_input_signal = input_signal
+            best_phase = phase
+    return best_input_signal, best_phase
+
+
+part2()

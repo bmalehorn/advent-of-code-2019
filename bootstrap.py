@@ -7,7 +7,7 @@ import sys
 SKELETON = """
 import math
 from collections import defaultdict
-from aoc import parse, flatten, pp, uniqc
+from aoc import parse, flatten, pp, uniqc, trace
 import aoc
 
 

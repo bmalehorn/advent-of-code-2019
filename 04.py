@@ -1,6 +1,6 @@
 import math
 from collections import defaultdict
-from aoc import parse, flatten, pp
+from aoc import parse, flatten, pp, uniqc
 import aoc
 
 
@@ -43,8 +43,30 @@ def part1():
     print("count = %r" % count)
 
 
+def has_double2(password):
+    digits = list(map(int, str(password)))
+    return 2 in uniqc(digits).values()
+
+
+def valid2(password):
+    return (
+        len(str(password)) == 6 and has_double2(password) and never_decreasing(password)
+    )
+
+
+assert valid2(112233)
+assert not valid2(123444)
+assert valid2(111122)
+
 def part2():
+    count = 0
+    for password in range(156218, 652527 + 1):
+        if valid2(password):
+            # pp(password)
+            count += 1
+    print("count = %r" % count)
+
     pass
 
 
-part1()
+part2()

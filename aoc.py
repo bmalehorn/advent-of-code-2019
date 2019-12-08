@@ -21,3 +21,17 @@ def pp(*args):
         ppObj.pprint(args[0])
     else:
         ppObj.pprint(args)
+
+
+def uniqc(a):
+    d = {}
+    for e in a:
+        if e not in d:
+            d[e] = 0
+        d[e] += 1
+    return d
+
+
+assert list(uniqc([])) == list({})
+assert list(uniqc([5, 5, 6])) == list({5: 2, 6: 1})
+

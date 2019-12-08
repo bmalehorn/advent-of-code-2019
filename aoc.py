@@ -5,7 +5,7 @@ import os
 import sys
 
 
-def parse(filename, split="[^-\\d]+"):
+def parse(filename, split="[^-\\d\\w]+"):
     return [
         list(map(int, re.compile(split).split(line.strip())))
         for line in open(filename).read().strip().splitlines()
@@ -39,10 +39,10 @@ assert list(uniqc([5, 5, 6])) == list({5: 2, 6: 1})
 
 
 def trace(f):
-    def g(*args):
+    def g(*args, **kwargs):
         sys.stdout.write("%s%r => " % (f.__name__, args))
         sys.stdout.flush()
-        res = f(*args)
+        res = f(*args, **kwargs)
         sys.stdout.write("%r\n" % res)
         sys.stdout.flush()
         return res

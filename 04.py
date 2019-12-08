@@ -32,6 +32,7 @@ assert not valid(223450)
 assert not valid(123789)
 
 
+# 1694
 def part1():
     # low = 156218
     # high = 652527
@@ -58,6 +59,7 @@ assert valid2(112233)
 assert not valid2(123444)
 assert valid2(111122)
 
+# 1148
 def part2():
     count = 0
     for password in range(156218, 652527 + 1):

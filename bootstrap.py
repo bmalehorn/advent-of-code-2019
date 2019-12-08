@@ -7,7 +7,7 @@ import sys
 SKELETON = """
 import math
 from collections import defaultdict
-from aoc import parse, flatten, pp
+from aoc import parse, flatten, pp, uniqc
 import aoc
 
 
@@ -15,8 +15,10 @@ def part1():
     numbers = parse("%s-easy.txt")
     pp(numbers)
 
+
 def part2():
     pass
+
 
 part1()
 """

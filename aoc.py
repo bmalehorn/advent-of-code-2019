@@ -1,9 +1,11 @@
 import itertools
 import pprint
 import re
+import os
+import sys
 
 
-def parse(filename, split="[^\\d]+"):
+def parse(filename, split="[^-\\d]+"):
     return [
         list(map(int, re.compile(split).split(line.strip())))
         for line in open(filename).read().strip().splitlines()
@@ -35,3 +37,14 @@ def uniqc(a):
 assert list(uniqc([])) == list({})
 assert list(uniqc([5, 5, 6])) == list({5: 2, 6: 1})
 
+
+def trace(f):
+    def g(*args):
+        sys.stdout.write("%s%r => " % (f.__name__, args))
+        sys.stdout.flush()
+        res = f(*args)
+        sys.stdout.write("%r\n" % res)
+        sys.stdout.flush()
+        return res
+
+    return g
